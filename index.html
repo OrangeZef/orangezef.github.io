@@ -4,204 +4,148 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Joka.ca | The Private Cloud Platform</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <link rel="icon" type="image/jpeg" href="inview.jpg">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        :root { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background-color: #020617; }
+        .glass { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .hero-gradient { background: radial-gradient(circle at 20% 30%, #10b98115, transparent), radial-gradient(circle at 80% 70%, #3b82f615, transparent); }
+        .text-glow { text-shadow: 0 0 20px rgba(16, 185, 129, 0.3); }
+    </style>
 </head>
-<body class="bg-slate-900 text-slate-300 font-sans antialiased p-4 md:p-10 min-h-screen">
+<body class="text-slate-100 min-h-screen hero-gradient overflow-x-hidden">
 
-    <div class="max-w-5xl mx-auto">
-        <header class="mb-10 flex items-center justify-between border-b border-slate-700 pb-6">
-            <div>
-                <h1 class="text-4xl font-bold text-emerald-400 tracking-tight">Joka.ca</h1>
-                <p class="text-slate-400 text-lg mt-2 font-mono text-sm">root@sandbox:~# The Private Cloud Platform</p>
+    <nav class="fixed top-0 w-full z-50 glass border-b border-white/5 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <img src="inview.jpg" class="h-10 w-10 rounded shadow-[0_0_15px_rgba(16,185,129,0.5)] border border-white/10" alt="Joka Logo">
+                <span class="text-2xl font-black tracking-tighter uppercase italic">Joka<span class="text-emerald-500">.ca</span></span>
             </div>
-            
-            <div class="hidden md:block">
-                <a href="https://status.joka.ca" target="_blank" class="inline-flex items-center rounded-md bg-emerald-400/10 px-3 py-2 text-sm font-medium text-emerald-400 ring-1 ring-inset ring-emerald-400/20 hover:bg-emerald-400/20 transition">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    Platform Status
-                </a>
-            </div>
-        </header>
-
-        <div x-data="{ activeTab: 'home' }" class="bg-slate-800 rounded-xl shadow-2xl border border-slate-700 overflow-hidden">
-            
-            <div class="flex flex-wrap border-b border-slate-700 bg-slate-900/50">
-                <button @click="activeTab = 'home'" :class="{ 'text-emerald-400 border-b-2 border-emerald-400 bg-slate-800/50': activeTab === 'home' }" class="flex-1 py-4 px-4 text-sm font-semibold uppercase tracking-wider hover:bg-slate-800 transition">About</button>
-                <button @click="activeTab = 'resources'" :class="{ 'text-emerald-400 border-b-2 border-emerald-400 bg-slate-800/50': activeTab === 'resources' }" class="flex-1 py-4 px-4 text-sm font-semibold uppercase tracking-wider hover:bg-slate-800 transition">Resources & Contact</button>
-                <button @click="activeTab = 'terms'" :class="{ 'text-emerald-400 border-b-2 border-emerald-400 bg-slate-800/50': activeTab === 'terms' }" class="flex-1 py-4 px-4 text-sm font-semibold uppercase tracking-wider hover:bg-slate-800 transition">Terms</button>
-                <button @click="activeTab = 'privacy'" :class="{ 'text-emerald-400 border-b-2 border-emerald-400 bg-slate-800/50': activeTab === 'privacy' }" class="flex-1 py-4 px-4 text-sm font-semibold uppercase tracking-wider hover:bg-slate-800 transition">Privacy</button>
-            </div>
-
-            <div class="p-6 md:p-10">
-                
-                <div x-show="activeTab === 'home'" x-transition.opacity.duration.300ms>
-                    <h2 class="text-3xl font-semibold text-white mb-6">Welcome to Joka.ca</h2>
-                    
-                    <div class="space-y-6 text-slate-300 leading-relaxed">
-                        <p>This site is a personal portfolio and private cloud platform. It serves as a showcase for technical projects and provides hosted services for authorized users.</p>
-                        
-                        <div class="bg-slate-700/30 p-6 rounded-lg border-l-4 border-emerald-500">
-                            <h3 class="text-xl font-bold text-white mb-2">My Focus</h3>
-                            <p>To build, learn, and implement. This platform is a professional sandbox dedicated to exploring new technologies and mastering the principles of secure, reliable, and efficient system administration. My focus is on turning modern concepts into stable, real-world solutions.</p>
-                        </div>
-
-                        <div>
-                            <h3 class="text-xl font-bold text-white mb-2">About Me</h3>
-                            <p>Joka.ca is the personal project of a single, dedicated administrator. With a passion for Cloud infrastructure, I manage all aspects of this platform—from back-end server configuration to front-end deployment. This site is a testament to hands-on technical management and a commitment to detail.</p>
-                        </div>
-
-                        <div>
-                            <h3 class="text-xl font-bold text-white mb-2">Platform Capabilities</h3>
-                            <p>This platform provides a suite of private, non-commercial services for a select user group. Capabilities include secure data hosting, private application sandboxing, and reliable communication tools. This environment serves as a practical showcase for developing, testing, and managing robust digital solutions from the ground up.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div x-show="activeTab === 'resources'" x-transition.opacity.duration.300ms style="display: none;">
-                    <h2 class="text-3xl font-semibold text-white mb-4">Platform Resources</h2>
-                    <p class="mb-8 text-slate-300">View status, contact me, or browse my work.</p>
-                    
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <a href="https://status.joka.ca" target="_blank" class="block bg-slate-700/30 p-6 rounded-lg border border-slate-600 hover:border-emerald-500 hover:bg-slate-700/50 transition">
-                            <h4 class="font-bold text-xl text-emerald-300 mb-2">Platform Status</h4>
-                            <p class="text-sm text-slate-400">Check the live uptime and operational status of all hosted services.</p>
-                        </a>
-
-                        <a href="https://github.com/OrangeZef" target="_blank" class="block bg-slate-700/30 p-6 rounded-lg border border-slate-600 hover:border-emerald-500 hover:bg-slate-700/50 transition">
-                            <h4 class="font-bold text-xl text-emerald-300 mb-2">Browse My Git</h4>
-                            <p class="text-sm text-slate-400">View my repositories, configurations, and code on GitHub.</p>
-                        </a>
-
-                        <a href="mailto:contact-us@joka.ca" class="block bg-slate-700/30 p-6 rounded-lg border border-slate-600 hover:border-emerald-500 hover:bg-slate-700/50 transition">
-                            <h4 class="font-bold text-xl text-emerald-300 mb-2">Contact Me</h4>
-                            <p class="text-sm text-slate-400">Reach out for inquiries or collaboration (contact-us@joka.ca).</p>
-                        </a>
-
-                        <a href="mailto:support@joka.ca" class="block bg-slate-700/30 p-6 rounded-lg border border-slate-600 hover:border-emerald-500 hover:bg-slate-700/50 transition">
-                            <h4 class="font-bold text-xl text-emerald-300 mb-2">Support</h4>
-                            <p class="text-sm text-slate-400">Get assistance with authorized platform services (support@joka.ca).</p>
-                        </a>
-                    </div>
-                </div>
-
-                <div x-show="activeTab === 'terms'" x-transition.opacity.duration.300ms style="display: none;">
-                    <h2 class="text-2xl font-semibold text-white mb-6">Terms and Conditions</h2>
-                    <div class="space-y-4 text-sm text-slate-300 leading-relaxed">
-                        
-                        <p><strong class="text-white">1. Welcome and Acceptance</strong><br>
-                        Welcome to Joka.ca (the "Site"). This Site provides access to privately hosted applications and services (collectively, the "Services"). These Terms of Service ("Terms") outline the rules for using the Services. The terms "We," "Us," "Our," or "the Administrator" refer to the individual owner and operator of Joka.ca. The terms "You" or "User" refer to you, the person invited to use the Services. This is a private, personal project. The Services are provided to you as a courtesy and are not for commercial use. By accessing or using any of the Services, you agree to be bound by these Terms. If you do not agree to these terms, you must stop using the Services immediately.</p>
-                        
-                        <p><strong class="text-white">2. The Services</strong></p>
-                        <ul class="list-disc pl-5 space-y-1">
-                            <li><strong>"As-Is" Service:</strong> The Services are provided strictly "AS IS" and "AS AVAILABLE." They may be modified, interrupted, suspended, or discontinued at any time, for any reason, without notice.</li>
-                            <li><strong>No Guarantees:</strong> We make no promises or guarantees regarding the Services' reliability, security, availability, or performance.</li>
-                            <li><strong>No Commercial Use:</strong> The Services are provided for your personal, non-commercial use only. You may not resell, lease, or use the Services for any business or revenue-generating activity.</li>
-                        </ul>
-
-                        <p><strong class="text-white">3. User Accounts</strong><br>
-                        To use the Services, you may need to be provisioned with an account. You are responsible for: Keeping your account credentials (like passwords) confidential; All activities that occur under your account, whether or not you authorized them; Notifying the Administrator immediately if you suspect any unauthorized use of your account.</p>
-
-                        <p><strong class="text-white">4. Acceptable Use Policy</strong><br>
-                        Your use of the Services is conditional. You agree that you will not use the Services to:</p>
-                        <ul class="list-disc pl-5 space-y-1">
-                            <li><strong>Violate Any Laws:</strong> Engage in any activity that is illegal under Canadian or international law.</li>
-                            <li><strong>Infringe on Rights:</strong> Host, upload, or share any content that infringes on the intellectual property rights (copyright, trademark, etc.) or privacy rights of any third party.</li>
-                            <li><strong>Distribute Harmful Content:</strong> Transmit any viruses, malware, or other malicious or disruptive code.</li>
-                            <li><strong>Abuse Resources:</strong> Engage in any activity that places an unreasonable load on the server or network infrastructure. This includes, but is not limited to, spamming, cryptomining, running denial-of-service (DDoS) attacks, or operating public file-sharing services.</li>
-                            <li><strong>Host Objectionable Content:</strong> Host or transmit any content that is defamatory, harassing, abusive, obscene, hateful, or otherwise objectionable.</li>
-                        </ul>
-                        <p>Violation of this policy may result in the immediate suspension or termination of your account and the removal of your content.</p>
-
-                        <p><strong class="text-white">5. Your Content and Data</strong></p>
-                        <ul class="list-disc pl-5 space-y-1">
-                            <li><strong>You Own Your Content:</strong> You retain all ownership rights to the data, files, and information you upload or create on the Services ("Your Content").</li>
-                            <li><strong>License to Us:</strong> By using the Services, you grant the Administrator a limited, worldwide license to host, store, back up, and transmit Your Content solely for the purpose of providing the Services to you.</li>
-                            <li><strong>Your Responsibility:</strong> You are solely responsible for Your Content. You warrant that you have all necessary rights to upload and use Your Content and that it does not violate these Terms.</li>
-                            <li><strong>NO BACKUP GUARANTEE:</strong> You are 100% responsible for maintaining your own backups. Data may be lost or corrupted at any time. We are not liable for any loss or corruption of Your Content. Do not use the Services as your only copy of any important data.</li>
-                        </ul>
-
-                        <p><strong class="text-white">6. Termination</strong><br>
-                        The Administrator reserves the right to suspend or terminate your access to the Services at any time, for any reason or no reason, with or without notice. This is a personal arrangement. If you breach these Terms, abuse the Services, or if the personal relationship between you and the Administrator ends, your access will be terminated. Upon termination, your right to use the Services will immediately cease, and the Administrator may permanently delete Your Content from the servers.</p>
-
-                        <p><strong class="text-white">7. Disclaimer of Warranties</strong><br>
-                        THE SERVICES ARE PROVIDED "AS IS," WITHOUT ANY WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED. THE ADMINISTRATOR DISCLAIMS ALL WARRANTIES, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. WE DO NOT WARRANT THAT THE SERVICES WILL BE UNINTERRUPTED, SECURE, ERROR-FREE, OR FREE OF HARMFUL COMPONENTS. YOU USE THE SERVICES AT YOUR OWN SOLE RISK.</p>
-
-                        <p><strong class="text-white">8. Limitation of Liability</strong><br>
-                        TO THE FULLEST EXTENT PERMITTED BY LAW, IN NO EVENT SHALL THE ADMINISTRATOR OF JOKA.CA BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR ANY LOSS OF DATA, USE, GOODWILL, OR OTHER INTANGIBLE LOSSES, RESULTING FROM: (I) YOUR ACCESS TO OR USE OF, OR INABILITY TO ACCESS OR USE, THE SERVICES; (II) ANY CONTENT OR CONDUCT OF ANY THIRD PARTY ON THE SERVICES; (III) ANY OF YOUR CONTENT, INCLUDING ANY LOSS OR CORRUPTION OF YOUR CONTENT; OR (IV) UNAUTHORIZED ACCESS, USE, OR ALTERATION OF YOUR ACCOUNT OR CONTENT. AS THE SERVICES ARE PROVIDED FREE OF CHARGE, YOU AGREE THAT THE ADMINISTRATOR'S TOTAL AGGREGATE LIABILITY TO YOU FOR ANY AND ALL CLAIMS ARISING FROM THE SERVICES IS ZERO DOLLARS ($0.00 CAD).</p>
-
-                        <p><strong class="text-white">9. Indemnification</strong><br>
-                        You agree to defend, indemnify, and hold harmless the Administrator of Joka.ca from and against any claims, liabilities, damages, losses, and expenses (including reasonable legal fees) arising out of or in any way connected with: Your access to or use of the Services; Your Content; or Your violation of these Terms. (For example, if you host a copyrighted movie and a studio sends a legal notice to the Administrator, you agree to cover the costs.)</p>
-
-                        <p><strong class="text-white">10. General Terms</strong></p>
-                        <ul class="list-disc pl-5 space-y-1">
-                            <li><strong>Governing Law:</strong> These Terms shall be governed by the laws of the Province of Ontario and the federal laws of Canada applicable therein.</li>
-                            <li><strong>Changes to Terms:</strong> We may modify these Terms at any time. We will try to provide notice of significant changes, but it is your responsibility to review them periodically. Your continued use of the Services after changes means you accept the new Terms.</li>
-                            <li><strong>Contact:</strong> If you have any questions about these Terms, please contact the Administrator.</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div x-show="activeTab === 'privacy'" x-transition.opacity.duration.300ms style="display: none;">
-                    <h2 class="text-2xl font-semibold text-white mb-6">Privacy Policy</h2>
-                    <div class="space-y-4 text-sm text-slate-300 leading-relaxed">
-                        
-                        <p><strong class="text-white">1. The Basics</strong><br>
-                        Hi. This is the privacy policy for Joka.ca. This site is a personal, non-commercial project I (the "Administrator") run to provide services to my friends and invited users ("You"). This policy explains what information I collect, how I use it, and how I protect it. My goal is to be as transparent as possible. I am not a business, and I will never sell your data.</p>
-
-                        <p><strong class="text-white">2. What Information Do I Collect?</strong><br>
-                        I may collect the following information:</p>
-                        <ul class="list-disc pl-5 space-y-1">
-                            <li><strong>Information You Provide:</strong> This includes information you give me to create an account, such as a username, an email address, and a password (which should be stored in a hashed, unreadable format).</li>
-                            <li><strong>Your Content:</strong> This is the data, files, text, or information you upload, create, or store on any of the services I host (e.g., files on a cloud drive, data in an application).</li>
-                            <li><strong>Technical Information (Server Logs):</strong> Like all web servers, mine automatically logs technical information when you use the Services. This may include your IP address, browser type, access times, and what pages you visited.</li>
-                        </ul>
-
-                        <p><strong class="text-white">3. How Do I Use Your Information?</strong><br>
-                        I use this information for only a few simple reasons:</p>
-                        <ul class="list-disc pl-5 space-y-1">
-                            <li><strong>To Provide the Services:</strong> To let you log in, to store your files, and to make the services work.</li>
-                            <li><strong>To Maintain the Services:</strong> To monitor the server for errors, security threats, or performance issues (e.g., to see if a service has crashed).</li>
-                            <li><strong>To Enforce the Terms:</strong> To investigate any potential violations of the Acceptable Use Policy (as outlined in my Terms of Service) or to block abusive traffic.</li>
-                            <li><strong>To Communicate With You:</strong> To email you about important service downtime, maintenance, or any issues with your account.</li>
-                        </ul>
-
-                        <p><strong class="text-white">4. How Do I Share Information? (I Don't)</strong><br>
-                        This is simple: I will not sell, rent, trade, or share your personal information with any third party for marketing or any other commercial purpose. Period. The only, very rare exceptions are:</p>
-                        <ul class="list-disc pl-5 space-y-1">
-                            <li><strong>To Comply with the Law:</strong> If I am required by law (e.g., presented with a valid Canadian court order or warrant), I may be forced to disclose information. I will not disclose data unless I am legally compelled to do so.</li>
-                            <li><strong>To Investigate Abuse:</strong> If I have a good faith belief that your activity is violating the Terms of Service (e.g., hosting illegal content or attacking the server), I may investigate and, if necessary, report such activity to the appropriate authorities.</li>
-                        </ul>
-
-                        <p><strong class="text-white">5. Data Security and Administrator Access</strong></p>
-                        <ul class="list-disc pl-5 space-y-1">
-                            <li><strong>Security:</strong> I take reasonable technical measures to secure the server and your data from unauthorized access (e.g., using firewalls, keeping software updated, and using secure protocols). However, no system is 100% secure. You use the Services at your own risk, and I cannot guarantee their absolute security.</li>
-                            <li><strong>Data Storage Location:</strong> Your data is stored on servers I manage, which may be located at my home or with a third-party data center provider.</li>
-                            <li><strong>ADMINISTRATOR ACCESS:</strong> This is important. As the sole administrator, I have the technical ability to access any data on the server, including Your Content. I promise to only use this access when it is absolutely necessary for the reasons listed in Section 3 (like troubleshooting a problem, running a backup, or investigating a security alert). I will not look at your files out of curiosity.</li>
-                        </ul>
-
-                        <p><strong class="text-white">6. Cookies</strong><br>
-                        I use minimal cookies. The services I host almost certainly use "session cookies" to keep you logged in so you don't have to enter your password on every page. I do not use any third-party advertising or tracking cookies.</p>
-
-                        <p><strong class="text-white">7. Data Retention & Deletion</strong><br>
-                        I will keep your information as long as you have an account. If you or I terminate your account, I will make a reasonable effort to permanently delete Your Content from the servers. Server logs (IP addresses, etc.) may be kept for a limited period for security and troubleshooting and are then automatically deleted.</p>
-
-                        <p><strong class="text-white">8. Your Rights (Access & Deletion)</strong><br>
-                        You're my friend. You don't need a formal process. If you want to know what information I have about you, or if you want to delete your account and all your data, just ask me. I will do my best to help you quickly.</p>
-
-                        <p><strong class="text-white">9. Changes to This Policy</strong><br>
-                        I may update this policy from time to time if I add new services or change how things work. If I make a significant change, I'll probably just email you or tell you directly.</p>
-
-                    </div>
-                </div>
-
+            <div class="hidden md:flex space-x-8 text-xs font-black uppercase tracking-[0.2em]">
+                <a href="https://status.joka.ca" class="hover:text-emerald-400 transition">System Status</a>
+                <a href="https://github.com/OrangeZef" class="hover:text-emerald-400 transition">Git Repo</a>
+                <a href="mailto:support@joka.ca" class="bg-emerald-500 text-slate-950 px-4 py-2 rounded shadow-lg shadow-emerald-500/20 hover:scale-105 transition">Support</a>
             </div>
         </div>
-        
-        <footer class="mt-12 mb-8 text-center text-sm text-slate-500">
-            Copyright &copy; 2025 Joka.ca - All Rights Reserved.
-        </footer>
-    </div>
+    </nav>
 
+    <section class="pt-40 pb-24 px-6 max-w-7xl mx-auto">
+        <div data-aos="fade-right" data-aos-duration="1000">
+            <h1 class="text-6xl md:text-9xl font-black uppercase italic leading-[0.85] mb-8 text-glow">
+                The Private <br><span class="text-emerald-500">Cloud</span>
+            </h1>
+            <p class="max-w-2xl text-xl text-slate-400 font-medium leading-relaxed">
+                Welcome to Joka.ca. This site is a personal portfolio and private cloud platform. It serves as a showcase for technical projects and provides hosted services for authorized users.
+            </p>
+            <div class="mt-10 flex flex-wrap gap-4">
+                <a href="https://status.joka.ca" class="bg-white text-slate-950 px-8 py-4 rounded-full font-black uppercase tracking-tighter hover:bg-emerald-400 transition flex items-center">
+                    Platform Status
+                </a>
+                <a href="mailto:contact-us@joka.ca" class="border border-white/20 px-8 py-4 rounded-full font-black uppercase tracking-tighter hover:bg-white/10 transition">Contact Me</a>
+                <a href="https://github.com/OrangeZef" class="border border-white/20 px-8 py-4 rounded-full font-black uppercase tracking-tighter hover:bg-white/10 transition">Browse My Git</a>
+            </div>
+        </div>
+    </section>
+
+    <main class="px-6 max-w-7xl mx-auto pb-32" x-data="{ activeTab: 'about' }">
+        
+        <div class="flex flex-wrap gap-3 mb-16 border-b border-white/5 pb-8">
+            <button @click="activeTab = 'about'" :class="activeTab === 'about' ? 'text-emerald-400 scale-110' : 'text-slate-500'" class="text-sm font-black uppercase tracking-widest transition-all px-4">01. About Me</button>
+            <button @click="activeTab = 'capabilities'" :class="activeTab === 'capabilities' ? 'text-emerald-400 scale-110' : 'text-slate-500'" class="text-sm font-black uppercase tracking-widest transition-all px-4">02. Capabilities</button>
+            <button @click="activeTab = 'terms'" :class="activeTab === 'terms' ? 'text-emerald-400 scale-110' : 'text-slate-500'" class="text-sm font-black uppercase tracking-widest transition-all px-4">03. Terms of Service</button>
+            <button @click="activeTab = 'privacy'" :class="activeTab === 'privacy' ? 'text-emerald-400 scale-110' : 'text-slate-500'" class="text-sm font-black uppercase tracking-widest transition-all px-4">04. Privacy Policy</button>
+        </div>
+
+        <div x-show="activeTab === 'about'" x-transition:enter="transition duration-500" class="space-y-12">
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="space-y-8">
+                    <div>
+                        <h3 class="text-sm font-black text-emerald-500 uppercase tracking-widest mb-2">My Focus</h3>
+                        <p class="text-xl text-slate-200 leading-relaxed">To build, learn, and implement. This platform is a professional sandbox dedicated to exploring new technologies and mastering the principles of secure, reliable, and efficient system administration. My focus is on turning modern concepts into stable, real-world solutions.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-black text-emerald-500 uppercase tracking-widest mb-2">About Me</h3>
+                        <p class="text-xl text-slate-200 leading-relaxed italic">"Joka.ca is the personal project of a single, dedicated administrator. With a passion for Cloud infrastructure, I manage all aspects of this platform—from back-end server configuration to front-end deployment. This site is a testament to hands-on technical management and a commitment to detail."</p>
+                    </div>
+                </div>
+                <div class="glass p-8 rounded-3xl flex items-center justify-center">
+                    <img src="inview.jpg" class="w-full max-w-sm rounded-2xl shadow-2xl" alt="Joka JK Logo">
+                </div>
+            </div>
+        </div>
+
+        <div x-show="activeTab === 'capabilities'" x-transition:enter="transition duration-500" class="space-y-8">
+            <h3 class="text-3xl font-black uppercase italic text-white">Platform Capabilities</h3>
+            <p class="text-xl text-slate-400 max-w-3xl">This platform provides a suite of private, non-commercial services for a select user group. Capabilities include secure data hosting, private application sandboxing, and reliable communication tools. This environment serves as a practical showcase for developing, testing, and managing robust digital solutions from the ground up.</p>
+            <div class="grid md:grid-cols-3 gap-6 pt-8">
+                <div class="glass p-8 rounded-2xl border-t-4 border-emerald-500">
+                    <h4 class="font-bold text-white mb-2 uppercase tracking-tighter">Secure Data Hosting</h4>
+                    <p class="text-sm text-slate-400">Encrypted, reliable storage solutions managed strictly in-house.</p>
+                </div>
+                <div class="glass p-8 rounded-2xl border-t-4 border-emerald-500">
+                    <h4 class="font-bold text-white mb-2 uppercase tracking-tighter">App Sandboxing</h4>
+                    <p class="text-sm text-slate-400">Isolated environments for testing and deploying private applications safely.</p>
+                </div>
+                <div class="glass p-8 rounded-2xl border-t-4 border-emerald-500">
+                    <h4 class="font-bold text-white mb-2 uppercase tracking-tighter">Communication Tools</h4>
+                    <p class="text-sm text-slate-400">Reliable, self-hosted messaging and collaboration infrastructure.</p>
+                </div>
+            </div>
+        </div>
+
+        <div x-show="activeTab === 'terms'" x-transition:enter="transition duration-500" class="glass p-8 md:p-12 rounded-3xl">
+            <h3 class="text-3xl font-black uppercase italic mb-8 text-emerald-500">Terms and Conditions</h3>
+            <div class="prose prose-invert max-w-none text-slate-300 space-y-6 text-sm">
+                <p><strong>1. Welcome and Acceptance:</strong> Welcome to Joka.ca (the "Site"). This Site provides access to privately hosted applications and services (collectively, the "Services"). These Terms of Service ("Terms") outline the rules for using the Services. The terms "We," "Us," "Our," or "the Administrator" refer to the individual owner and operator of Joka.ca. The terms "You" or "User" refer to you, the person invited to use the Services. This is a private, personal project. The Services are provided to you as a courtesy and are not for commercial use. By accessing or using any of the Services, you agree to be bound by these Terms. If you do not agree to these terms, you must stop using the Services immediately.</p>
+                
+                <p><strong>2. The Services:</strong> "As-Is" Service: The Services are provided strictly "AS IS" and "AS AVAILABLE." They may be modified, interrupted, suspended, or discontinued at any time, for any reason, without notice. No Guarantees: We make no promises or guarantees regarding the Services' reliability, security, availability, or performance. No Commercial Use: The Services are provided for your personal, non-commercial use only. You may not resell, lease, or use the Services for any business or revenue-generating activity.</p>
+                
+                <p><strong>3. User Accounts:</strong> To use the Services, you may need to be provisioned with an account. You are responsible for: Keeping your account credentials (like passwords) confidential. All activities that occur under your account, whether or not you authorized them. Notifying the Administrator immediately if you suspect any unauthorized use of your account.</p>
+                
+                <p><strong>4. Acceptable Use Policy:</strong> Your use of the Services is conditional. You agree that you will not use the Services to: Violate Any Laws (Canadian or international); Infringe on Rights (Intellectual property or privacy); Distribute Harmful Content (Viruses, malware); Abuse Resources (Spamming, cryptomining, DDoS); Host Objectionable Content (Defamatory, obscene, or hateful).</p>
+                
+                <p><strong>5. Your Content and Data:</strong> You Own Your Content: You retain all ownership rights. License to Us: You grant the Administrator a limited license to host/store Your Content. NO BACKUP GUARANTEE: You are 100% responsible for maintaining your own backups. Data may be lost at any time. We are not liable for any loss or corruption.</p>
+                
+                <p><strong>6. Termination:</strong> The Administrator reserves the right to suspend or terminate your access at any time, for any reason or no reason, with or without notice. If you breach these Terms or the personal relationship ends, access is terminated and data may be deleted.</p>
+                
+                <p><strong>7. Disclaimer of Warranties:</strong> THE SERVICES ARE PROVIDED "AS IS," WITHOUT ANY WARRANTIES. WE DO NOT WARRANT THAT THE SERVICES WILL BE UNINTERRUPTED, SECURE, OR ERROR-FREE. YOU USE THE SERVICES AT YOUR OWN SOLE RISK.</p>
+                
+                <p><strong>8. Limitation of Liability:</strong> THE ADMINISTRATOR'S TOTAL AGGREGATE LIABILITY TO YOU FOR ANY AND ALL CLAIMS ARISING FROM THE SERVICES IS ZERO DOLLARS ($0.00 CAD).</p>
+                
+                <p><strong>9. Indemnification:</strong> You agree to defend and hold harmless the Administrator from any claims or expenses (including legal fees) arising from your use of the Services or violation of these Terms.</p>
+                
+                <p><strong>10. General Terms:</strong> Governing Law: Laws of Ontario and Canada. Changes to Terms: We may modify these Terms at any time. Contact: Please contact the Administrator for any questions.</p>
+            </div>
+        </div>
+
+        <div x-show="activeTab === 'privacy'" x-transition:enter="transition duration-500" class="glass p-8 md:p-12 rounded-3xl">
+            <h3 class="text-3xl font-black uppercase italic mb-8 text-emerald-500">Privacy Policy</h3>
+            <div class="prose prose-invert max-w-none text-slate-300 space-y-6 text-sm">
+                <p><strong>1. The Basics:</strong> This is the privacy policy for Joka.ca. This site is a personal, non-commercial project run by the Administrator to provide services to friends and invited users. I am not a business and will never sell your data.</p>
+                <p><strong>2. Information Collected:</strong> Information You Provide (usernames, email), Your Content (files/data), and Technical Information (Server Logs like IP addresses and access times).</p>
+                <p><strong>3. Use of Information:</strong> To provide services, maintain security, monitor for errors, and communicate with you about your account.</p>
+                <p><strong>4. Sharing Information:</strong> I will NOT sell, rent, or trade your info. Exceptions only apply for legal compliance or to investigate abuse of the Terms of Service.</p>
+                <p><strong>5. Data Security & Administrator Access:</strong> Reasonable technical measures are used (firewalls, secure protocols). ADMINISTRATOR ACCESS: As the sole administrator, I have the technical ability to access any data on the server but promise to only do so for troubleshooting, maintenance, or security needs.</p>
+                <p><strong>6. Cookies:</strong> Minimal session cookies are used to keep you logged in. No third-party tracking.</p>
+                <p><strong>7. Data Retention:</strong> Info is kept as long as you have an account. Log files are automatically deleted after a limited troubleshooting period.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="py-20 glass border-t border-white/5 text-center">
+        <img src="inview.jpg" class="h-12 w-12 mx-auto mb-6 opacity-50 grayscale hover:grayscale-0 transition" alt="Joka Logo">
+        <p class="text-xs font-black uppercase tracking-[0.5em] text-slate-500 mb-2">Joka.ca Infrastructure</p>
+        <p class="text-[10px] text-slate-600 uppercase tracking-widest font-bold italic">Copyright &copy; 2025-2026 - All Rights Reserved</p>
+    </footer>
+
+    <script> AOS.init({ once: true }); </script>
 </body>
 </html>
