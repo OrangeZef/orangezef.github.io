@@ -3,229 +3,472 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Joka.ca | The Private Cloud Platform</title>
+    <title>Joka.ca | Cloud Architecture & Consulting</title>
     
+    <!-- CSS & UI Frameworks -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     
+    <!-- Interactivity Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rellax/1.12.1/rellax.min.js"></script>
+
     <link rel="icon" type="image/png" href="inview.png">
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
         
         :root { scroll-behavior: smooth; }
         
         body { 
             font-family: 'Inter', sans-serif; 
-            background-color: #000000; /* Pure Black Main */
-            color: #f1f5f9;
+            background-color: #050505; 
+            color: #e0e0e0;
+            overflow-x: hidden;
+            width: 100%; 
         }
 
-        /* Animated Grid Background */
-        .bg-grid {
+        .font-mono { font-family: 'Space Mono', monospace; }
+
+        /* Dynamic Background Layer */
+        #particles-js {
             position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background-size: 50px 50px;
-            background-image: 
-                linear-gradient(to right, rgba(234, 179, 8, 0.05) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(234, 179, 8, 0.05) 1px, transparent 1px);
+            width: 100%; 
+            height: 100%; 
+            top: 0; left: 0;
             z-index: -1;
-            animation: panBg 60s linear infinite;
+            background-color: #050505;
         }
 
-        @keyframes panBg {
-            0% { background-position: 0% 0%; }
-            100% { background-position: 100% 100%; }
-        }
-
-        /* Glassmorphism with Yellow/Green hints */
+        /* Glassmorphism Styles */
         .glass { 
-            background: rgba(10, 10, 10, 0.8); 
-            backdrop-filter: blur(20px); 
+            background: rgba(13, 13, 13, 0.6); 
+            backdrop-filter: blur(16px); 
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(234, 179, 8, 0.15); 
         }
-
-        .glass:hover {
-            border-color: rgba(234, 179, 8, 0.5);
-            box-shadow: 0 0 30px rgba(234, 179, 8, 0.1);
+        
+        .glass-panel {
+            background: rgba(5, 5, 5, 0.90); 
+            backdrop-filter: blur(24px); 
+            border-left: 1px solid rgba(234, 179, 8, 0.3);
         }
 
-        .text-glow-yellow { text-shadow: 0 0 20px rgba(234, 179, 8, 0.6); }
-        .text-glow-green { text-shadow: 0 0 20px rgba(34, 197, 94, 0.6); }
-
-        /* Hacker Font for technical details */
-        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .hover-glow-green:hover {
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.15);
+            border-color: rgba(0, 255, 0, 0.5);
+        }
+        
+        .text-glow-yellow { text-shadow: 0 0 15px rgba(234, 179, 8, 0.5); }
+        .text-glow-green { text-shadow: 0 0 15px rgba(0, 255, 0, 0.5); }
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #000000; }
+        ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #eab308; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #22c55e; }
+        ::-webkit-scrollbar-thumb:hover { background: #00ff00; }
+
+        /* Decorative Parallax Shapes */
+        .parallax-shape {
+            position: absolute;
+            z-index: -1;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.15;
+        }
+
+        /* Floating Donut Button Text Animation */
+        .rotating-text {
+            animation: spin-slow 10s linear infinite;
+            transform-origin: center;
+        }
+        @keyframes spin-slow {
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 
-<body class="overflow-x-hidden" 
-      x-data="{ 
-          route: 'home', 
-          tab: 'about', 
-          year: new Date().getFullYear(),
-          scrollProgress: 0 
-      }"
-      @scroll.window="scrollProgress = (window.pageYOffset / (document.documentElement.scrollHeight - window.innerHeight)) * 100">
+<body x-data="{ 
+    loading: true,
+    menuOpen: false, 
+    route: 'home',
+    year: new Date().getFullYear(),
+    mx: 0,
+    my: 0
+}" 
+x-init="setTimeout(() => { loading = false; setTimeout(() => { AOS.refresh(); }, 500); }, 2200)"
+@mousemove="mx = ($event.clientX / window.innerWidth - 0.5) * 40; my = ($event.clientY / window.innerHeight - 0.5) * 40">
 
-    <div class="bg-grid"></div>
+    <!-- ========================================== -->
+    <!-- PRELOADER SCREEN                           -->
+    <!-- ========================================== -->
+    <div x-show="loading" 
+         x-transition:leave="transition ease-in-out duration-1000" 
+         x-transition:leave-start="opacity-100 translate-y-0" 
+         x-transition:leave-end="opacity-0 -translate-y-full" 
+         class="fixed inset-0 z-[100] bg-[#020202] flex flex-col items-center justify-center">
+        
+        <!-- Animated Radar Logo Group -->
+        <div class="relative flex items-center justify-center mb-10">
+            <!-- Outer spinning ring -->
+            <div class="absolute inset-[-1.5rem] rounded-full border-t-2 border-b-2 border-green-500/40 animate-[spin_3s_linear_infinite]"></div>
+            <!-- Inner spinning ring -->
+            <div class="absolute inset-[-0.75rem] rounded-full border-l-2 border-r-2 border-yellow-400/40 animate-[spin_2s_linear_infinite_reverse]"></div>
+            
+            <img src="inview.png" class="h-24 w-24 shadow-[0_0_40px_rgba(0,255,0,0.4)] rounded-xl animate-pulse border border-green-500/20 relative z-10" alt="Joka Logo">
+        </div>
+        
+        <!-- Loading Bar -->
+        <div class="w-48 h-1 bg-white/10 rounded-full overflow-hidden relative">
+            <div class="absolute top-0 left-0 h-full bg-green-500 w-full origin-left animate-[scale-x_1.8s_ease-in-out_infinite]" style="animation: progress 1.8s ease-out forwards;"></div>
+        </div>
+        <div class="mt-6 px-4 text-center font-mono text-xs text-green-500 uppercase tracking-[0.3em] flex flex-col space-y-1">
+            <span class="animate-pulse">> Decrypting Joka.ca</span>
+            <span class="text-yellow-400 opacity-70">> Secure connection established</span>
+        </div>
+    </div>
 
-    <div class="fixed top-0 left-0 h-1 bg-green-500 z-[60] transition-all duration-150 ease-out" :style="`width: ${scrollProgress}%`"></div>
+    <!-- Particle Background & Parallax Elements -->
+    <div id="particles-js"></div>
+    <div class="parallax-shape bg-green-500 w-96 h-96 top-[20%] left-[-10%] transition-transform duration-300 ease-out" data-rellax-speed="-3" :style="`transform: translate3d(${mx * 2}px, ${my * 2}px, 0)`"></div>
+    <div class="parallax-shape bg-yellow-400 w-64 h-64 top-[60%] right-[-5%] transition-transform duration-300 ease-out" data-rellax-speed="-2" :style="`transform: translate3d(${mx * -1.5}px, ${my * -1.5}px, 0)`"></div>
+    <div class="parallax-shape bg-green-500 w-[500px] h-[500px] top-[120%] left-[30%] transition-transform duration-300 ease-out" data-rellax-speed="-4" :style="`transform: translate3d(${mx * 3}px, ${my * 3}px, 0)`"></div>
 
-    <nav class="fixed top-0 w-full z-50 glass px-6 py-4">
+    <!-- Top Navigation -->
+    <nav class="fixed top-0 w-full z-40 glass px-6 py-4 transition-all duration-300">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <button @click="route = 'home'; window.scrollTo(0,0);" class="flex items-center space-x-4 focus:outline-none">
-                <img src="inview.png" class="h-10 w-10 rounded shadow-[0_0_15px_rgba(34,197,94,0.5)] border border-green-500/30" alt="Joka Logo">
-                <span class="text-2xl font-black tracking-tighter uppercase italic text-white">Joka<span class="text-yellow-400">.ca</span></span>
+            <!-- Logo (Resets to Home) -->
+            <button @click="route = 'home'; window.scrollTo(0,0);" class="flex items-center space-x-4 focus:outline-none group">
+                <img src="inview.png" class="h-10 w-10 rounded shadow-[0_0_15px_rgba(0,255,0,0.4)] border border-green-500/30 group-hover:scale-110 transition-transform duration-300" alt="Joka Logo">
+                <span class="text-2xl font-black tracking-tighter uppercase italic text-white group-hover:text-green-500 transition-colors">Joka<span class="text-yellow-400">.ca</span></span>
             </button>
-            <div class="hidden md:flex space-x-8 text-xs font-black uppercase tracking-[0.2em] items-center">
-                <a href="https://status.joka.ca" target="_blank" class="text-slate-300 hover:text-yellow-400 transition">System Status</a>
-                <a href="https://github.com/OrangeZef" target="_blank" class="text-slate-300 hover:text-yellow-400 transition">Git Repo</a>
-                <a href="mailto:support@joka.ca" class="bg-yellow-400 text-black px-5 py-2 rounded-sm font-bold shadow-[0_0_15px_rgba(234,179,8,0.4)] hover:bg-green-500 hover:shadow-[0_0_15px_rgba(34,197,94,0.4)] transition-all duration-300">Support</a>
-            </div>
+            
+            <button @click="menuOpen = true" class="text-yellow-400 hover:text-green-500 transition-colors focus:outline-none flex items-center space-x-2">
+                <span class="font-mono text-sm uppercase hidden md:block">Menu</span>
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
         </div>
     </nav>
 
-    <div x-show="route === 'home'" x-transition:enter="transition ease-out duration-700 delay-100" x-transition:enter-start="opacity-0 translate-y-4" x-transition:leave="transition ease-in duration-300" x-transition:leave-end="opacity-0 -translate-y-4">
+    <!-- Floating "Donut" Chat Button -->
+    <a href="mailto:contact-us@joka.ca" class="fixed bottom-6 right-6 z-50 group flex items-center justify-center w-24 h-24 md:w-32 md:h-32 focus:outline-none">
+        <!-- Rotating Text SVG -->
+        <div class="absolute inset-0 rotating-text group-hover:[animation-play-state:paused] transition-transform duration-300 group-hover:scale-110">
+            <svg viewBox="0 0 100 100" class="w-full h-full text-yellow-400 overflow-visible">
+                <path id="circlePath" d="M 50, 50 m -36, 0 a 36,36 0 1,1 72,0 a 36,36 0 1,1 -72,0" fill="transparent" />
+                <text class="text-[11px] font-black uppercase tracking-[0.2em] fill-current">
+                    <textPath href="#circlePath" startOffset="0" textLength="225" lengthAdjust="spacing">
+                        • LET'S CHAT • BOOK A MEETING
+                    </textPath>
+                </text>
+            </svg>
+        </div>
+        <!-- Center Icon Button -->
+        <div class="relative z-10 w-12 h-12 md:w-14 md:h-14 bg-green-500 rounded-full flex items-center justify-center text-black group-hover:bg-yellow-400 group-hover:scale-110 transition-all duration-300 shadow-[0_0_20px_rgba(0,255,0,0.4)] group-hover:shadow-[0_0_30px_rgba(234,179,8,0.6)]">
+            <svg class="w-6 h-6 md:w-7 md:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+        </div>
+    </a>
+
+    <!-- Side Menu Overlay (Hamburger Drawer) -->
+    <div x-show="menuOpen" style="display: none;" class="relative z-50">
+        <div x-show="menuOpen" 
+             x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+             x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+             @click="menuOpen = false" 
+             class="fixed inset-0 bg-black/60 backdrop-blur-sm cursor-pointer">
+        </div>
         
-        <section class="pt-48 pb-24 px-6 max-w-7xl mx-auto">
-            <div data-aos="fade-right" data-aos-duration="1000">
-                <div class="inline-block border border-yellow-400/30 bg-yellow-400/10 text-yellow-400 font-mono text-xs px-3 py-1 rounded-full mb-6 uppercase tracking-widest">
-                    <span class="inline-block w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span> Network Online
+        <div x-show="menuOpen" 
+             x-transition:enter="transform transition ease-in-out duration-300" x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0" 
+             x-transition:leave="transform transition ease-in-out duration-300" x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full" 
+             class="fixed right-0 top-0 h-full w-full md:w-[450px] glass-panel flex flex-col justify-between p-8 md:p-12 shadow-[-20px_0_50px_rgba(0,0,0,0.5)] overflow-y-auto">
+            
+            <div>
+                <div class="flex justify-between items-center mb-12">
+                    <span class="text-xs font-mono text-green-500 uppercase tracking-widest">// Command Center</span>
+                    <button @click="menuOpen = false" class="text-slate-400 hover:text-yellow-400 transition-colors">
+                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
                 </div>
-                <h1 class="text-6xl md:text-8xl font-black uppercase italic leading-[0.85] mb-8 text-white">
-                    The Private <br><span class="text-yellow-400 text-glow-yellow">Cloud</span>
-                </h1>
-                <p class="max-w-2xl text-xl text-slate-400 font-medium leading-relaxed border-l-4 border-green-500 pl-4">
-                    Welcome to Joka.ca. This site is a personal portfolio and private cloud platform. It serves as a showcase for technical projects and provides hosted services for authorized users.
-                </p>
-                <div class="mt-12 flex flex-wrap gap-4">
-                    <a href="https://status.joka.ca" target="_blank" class="bg-yellow-400 text-black px-8 py-4 font-black uppercase tracking-tighter hover:bg-green-500 transition-colors duration-300 flex items-center shadow-[0_0_20px_rgba(234,179,8,0.3)]">
-                        Platform Status
-                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+
+                <div class="flex flex-col space-y-6 text-2xl font-black uppercase italic tracking-wider">
+                    <button @click="route = 'home'; menuOpen = false; window.scrollTo(0,0);" class="text-left text-white hover:text-yellow-400 hover:translate-x-4 transition-all duration-300">PLATFORM HOME</button>
+                    <button @click="route = 'home'; menuOpen = false; setTimeout(() => document.getElementById('consulting-section').scrollIntoView({behavior: 'smooth'}), 100);" class="text-left text-white hover:text-yellow-400 hover:translate-x-4 transition-all duration-300">CONSULTING SERVICES</button>
+                    
+                    <a href="https://status.joka.ca" target="_blank" class="text-left text-white hover:text-green-500 hover:translate-x-4 transition-all duration-300 flex items-center group">
+                        SYSTEM STATUS
+                        <svg class="w-6 h-6 ml-4 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                     </a>
-                    <a href="mailto:contact-us@joka.ca" class="glass px-8 py-4 font-black uppercase tracking-tighter text-white hover:text-yellow-400 transition-colors">Contact Me</a>
+                    <a href="https://github.com/OrangeZef" target="_blank" class="text-left text-white hover:text-green-500 hover:translate-x-4 transition-all duration-300 flex items-center group">
+                        GITHUB
+                        <svg class="w-6 h-6 ml-4 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    </a>
+                    <a href="https://www.linkedin.com/in/julius-koka/" target="_blank" class="text-left text-white hover:text-green-500 hover:translate-x-4 transition-all duration-300 flex items-center group">
+                        LINKEDIN
+                        <svg class="w-6 h-6 ml-4 opacity-0 group-hover:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    </a>
+                    <a href="mailto:contact-us@joka.ca" class="text-left text-white hover:text-yellow-400 hover:translate-x-4 transition-all duration-300">BUSINESS INQUIRIES</a>
+                </div>
+
+                <div class="mt-16 pt-8 border-t border-white/10 flex flex-col space-y-4">
+                    <span class="text-xs font-mono text-yellow-400 uppercase tracking-widest">// Legal Docs</span>
+                    <button @click="route = 'terms'; menuOpen = false; window.scrollTo(0,0);" class="text-left text-sm font-bold text-slate-400 hover:text-white transition-colors">Terms and Conditions</button>
+                    <button @click="route = 'privacy'; menuOpen = false; window.scrollTo(0,0);" class="text-left text-sm font-bold text-slate-400 hover:text-white transition-colors">Privacy Policy</button>
+                </div>
+            </div>
+
+            <div class="mt-8 text-xs font-mono text-slate-500 uppercase tracking-widest border-l-2 border-green-500 pl-3">
+                AUTHORIZED JOKA.CA MEMBERS ONLY.
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- ROUTE: HOME (MAIN PLATFORM)                -->
+    <!-- ========================================== -->
+    <div x-show="route === 'home'" 
+         x-transition:enter="transition ease-out duration-700 delay-300" 
+         x-transition:enter-start="opacity-0 translate-y-4" 
+         x-transition:leave="transition ease-in duration-300" 
+         x-transition:leave-start="opacity-100" 
+         x-transition:leave-end="opacity-0" 
+         class="relative z-10 w-full overflow-hidden">
+        
+        <!-- Hero Section -->
+        <section class="min-h-screen flex flex-col justify-center px-4 sm:px-6 max-w-7xl mx-auto pt-20">
+            <div data-aos="fade-up" data-aos-duration="1000" data-aos-once="true" class="rellax" data-rellax-speed="1">
+                <div class="inline-block border border-green-500/30 bg-green-500/10 text-green-500 font-mono text-xs px-3 py-1 rounded-full mb-6 uppercase tracking-widest">
+                    <span class="inline-block w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse shadow-[0_0_8px_rgba(0,255,0,0.8)]"></span> Secure Node Active
+                </div>
+                
+                <!-- Layered 3D Mouse-Tracking Title -->
+                <h1 class="relative text-5xl sm:text-6xl md:text-8xl lg:text-[8rem] font-black uppercase italic leading-[0.95] md:leading-[0.85] mb-8 break-words z-10 w-full">
+                    <!-- Deep Background Layer (Green) -->
+                    <span class="absolute top-0 left-0 text-green-500/30 blur-[4px] transition-transform duration-200 ease-out pointer-events-none" 
+                          :style="`transform: translate3d(${mx * -1}px, ${my * -1}px, 0) scale(1.05)`" aria-hidden="true">
+                        Joka.ca <br><span class="inline-block mt-2 md:mt-0">Architecture</span>
+                    </span>
+                    
+                    <!-- Mid Layer (Yellow) -->
+                    <span class="absolute top-0 left-0 text-yellow-400/50 blur-[1px] transition-transform duration-100 ease-out pointer-events-none" 
+                          :style="`transform: translate3d(${mx * -0.5}px, ${my * -0.5}px, 0) scale(1.02)`" aria-hidden="true">
+                        Joka.ca <br><span class="inline-block mt-2 md:mt-0">Architecture</span>
+                    </span>
+                    
+                    <!-- Front Layer (White) -->
+                    <span class="relative text-white transition-transform duration-75 ease-out flex flex-col" 
+                          :style="`transform: translate3d(${mx * 0.8}px, ${my * 0.8}px, 0)`">
+                        Joka.ca <span class="text-yellow-400 text-glow-yellow inline-block mt-2 md:mt-0">Architecture</span>
+                    </span>
+                </h1>
+
+                <p class="max-w-xl text-base sm:text-lg text-slate-400 font-mono leading-relaxed mb-10 border-l-2 border-white/20 pl-4 break-words transition-transform duration-200 ease-out" :style="`transform: translate3d(${mx * 0.3}px, ${my * 0.3}px, 0)`">
+                    > Initializing connection...<br>
+                    > Cloud Infrastructure & Consulting.<br>
+                    > Developing stable, real-world IT solutions.
+                </p>
+                <div class="flex flex-wrap gap-4 transition-transform duration-300 ease-out" :style="`transform: translate3d(${mx * 0.5}px, ${my * 0.5}px, 0)`">
+                    <button @click="document.getElementById('consulting-section').scrollIntoView({behavior: 'smooth'})" class="bg-yellow-400 text-black px-6 sm:px-8 py-4 font-black uppercase tracking-tighter hover:bg-green-500 transition-colors duration-300 flex items-center shadow-[0_0_20px_rgba(234,179,8,0.3)] text-sm sm:text-base">
+                        Explore Services
+                        <svg class="w-5 h-5 ml-2 animate-bounce shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                    </button>
                 </div>
             </div>
         </section>
 
-        <main class="px-6 max-w-7xl mx-auto pb-32">
-            
-            <div class="flex flex-wrap gap-4 mb-16 border-b border-white/10 pb-4">
-                <button @click="tab = 'about'" :class="tab === 'about' ? 'text-yellow-400 border-b-2 border-yellow-400' : 'text-slate-500 hover:text-white'" class="text-sm font-black uppercase tracking-widest transition-all px-2 pb-2">01. Overview</button>
-                <button @click="tab = 'capabilities'" :class="tab === 'capabilities' ? 'text-yellow-400 border-b-2 border-yellow-400' : 'text-slate-500 hover:text-white'" class="text-sm font-black uppercase tracking-widest transition-all px-2 pb-2">02. Architecture</button>
-            </div>
-
-            <div x-show="tab === 'about'" x-transition:enter="transition duration-500" class="space-y-12">
-                <div class="grid md:grid-cols-2 gap-12 items-center">
-                    <div class="space-y-10">
-                        <div>
-                            <h3 class="font-mono text-green-500 text-sm mb-3 uppercase tracking-widest">// My Focus</h3>
-                            <p class="text-xl text-slate-300 leading-relaxed">To build, learn, and implement. This platform is a professional sandbox dedicated to exploring new technologies and mastering the principles of secure, reliable, and efficient system administration. My focus is on turning modern concepts into stable, real-world solutions.</p>
-                        </div>
-                        <div class="glass p-8 relative overflow-hidden group">
-                            <div class="absolute top-0 right-0 w-32 h-32 bg-yellow-400/5 rounded-full blur-3xl group-hover:bg-yellow-400/20 transition-all duration-700"></div>
-                            <h3 class="font-mono text-green-500 text-sm mb-3 uppercase tracking-widest">// About Me</h3>
-                            <p class="text-lg text-slate-300 leading-relaxed italic relative z-10">"Joka.ca is the personal project of a single, dedicated administrator. With a passion for Cloud infrastructure, I manage all aspects of this platform—from back-end server configuration to front-end deployment. This site is a testament to hands-on technical management and a commitment to detail."</p>
-                        </div>
+        <!-- DEDICATED STATUS BAR -->
+        <section class="py-12 border-y border-white/10 bg-black/60 backdrop-blur-lg relative z-20">
+            <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6" data-aos="zoom-in-up">
+                <div class="flex items-center space-x-6">
+                    <div class="w-16 h-16 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center shrink-0">
+                        <svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     </div>
-                    <div class="flex justify-center">
-                        <div class="relative group">
-                            <div class="absolute -inset-1 bg-gradient-to-r from-green-500 to-yellow-400 opacity-20 group-hover:opacity-50 blur transition duration-1000"></div>
-                            <img src="inview.png" class="relative w-full max-w-sm rounded shadow-2xl grayscale border border-white/10 group-hover:grayscale-0 transition duration-700" alt="Joka JK Logo">
-                        </div>
+                    <div>
+                        <h3 class="text-2xl font-black uppercase italic text-white tracking-widest">Platform <span class="text-green-500">Status</span></h3>
+                        <p class="text-sm font-mono text-slate-400 mt-1">Live monitoring for all private services and network routing.</p>
                     </div>
                 </div>
+                <a href="https://status.joka.ca" target="_blank" class="px-8 py-3 bg-transparent border border-green-500/50 hover:bg-green-500/10 transition-all flex items-center group w-full md:w-auto justify-center">
+                    <span class="w-2 h-2 bg-green-500 rounded-full mr-3 animate-pulse"></span>
+                    <span class="font-bold text-white tracking-widest uppercase text-sm">View Dashboard</span>
+                    <svg class="w-4 h-4 ml-3 text-green-500 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </a>
             </div>
+        </section>
 
-            <div x-show="tab === 'capabilities'" x-transition:enter="transition duration-500" class="space-y-8" style="display: none;">
-                <h3 class="text-3xl font-black uppercase italic text-white">Platform Capabilities</h3>
-                <p class="text-lg text-slate-400 max-w-3xl">This platform provides a suite of private, non-commercial services for a select user group. Capabilities include secure data hosting, private application sandboxing, and reliable communication tools. This environment serves as a practical showcase for developing, testing, and managing robust digital solutions from the ground up.</p>
+        <!-- IT CONSULTING SECTION (Updated with LinkedIn details & 14+ Years) -->
+        <section id="consulting-section" class="py-24 sm:py-32 px-4 sm:px-6 max-w-7xl mx-auto relative z-10">
+            <div class="grid md:grid-cols-2 gap-12 sm:gap-16 items-center">
+                <div class="order-2 md:order-1 relative rellax" data-rellax-speed="1" data-aos="zoom-in-up">
+                   <div class="glass p-8 sm:p-10 md:p-12 border-l-4 border-yellow-400 shadow-[0_20px_50px_rgba(0,0,0,0.5)]" data-tilt data-tilt-max="5">
+                       <h3 class="font-mono text-yellow-400 text-xs sm:text-sm mb-6 uppercase tracking-widest flex items-center">
+                           <svg class="w-5 h-5 mr-2 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                           14+ Years Experience
+                       </h3>
+                       <p class="text-xl sm:text-2xl text-slate-200 italic font-medium leading-snug mb-8">
+                           "Bridging the gap between deep technical infrastructure and executive strategy. I combine hands-on systems expertise with high-level communication—ensuring you get exactly what you need without the technical friction."
+                       </p>
+                       <ul class="space-y-3 font-mono text-sm text-green-400">
+                           <li>> Server Admin & Cybersecurity</li>
+                           <li>> Network Infrastructure & Routing</li>
+                           <li>> Datacenter & Hardware Procurement</li>
+                           <li>> Linux & Windows Environments</li>
+                       </ul>
+                   </div>
+                </div>
                 
-                <div class="grid md:grid-cols-3 gap-6 pt-8">
-                    <div class="glass p-8 rounded-sm group">
-                        <div class="w-12 h-12 bg-yellow-400/10 border border-yellow-400/30 rounded flex items-center justify-center text-yellow-400 mb-6 font-mono group-hover:bg-yellow-400 group-hover:text-black transition-colors duration-300">01</div>
-                        <h4 class="font-bold text-white mb-2 uppercase tracking-widest text-lg">Secure Data Hosting</h4>
-                        <p class="text-sm text-slate-400 leading-relaxed">Encrypted, reliable storage solutions managed strictly in-house.</p>
-                    </div>
-                    <div class="glass p-8 rounded-sm group">
-                        <div class="w-12 h-12 bg-yellow-400/10 border border-yellow-400/30 rounded flex items-center justify-center text-yellow-400 mb-6 font-mono group-hover:bg-yellow-400 group-hover:text-black transition-colors duration-300">02</div>
-                        <h4 class="font-bold text-white mb-2 uppercase tracking-widest text-lg">App Sandboxing</h4>
-                        <p class="text-sm text-slate-400 leading-relaxed">Isolated environments for testing and deploying private applications safely.</p>
-                    </div>
-                    <div class="glass p-8 rounded-sm group">
-                        <div class="w-12 h-12 bg-yellow-400/10 border border-yellow-400/30 rounded flex items-center justify-center text-yellow-400 mb-6 font-mono group-hover:bg-yellow-400 group-hover:text-black transition-colors duration-300">03</div>
-                        <h4 class="font-bold text-white mb-2 uppercase tracking-widest text-lg">Communication Tools</h4>
-                        <p class="text-sm text-slate-400 leading-relaxed">Reliable, self-hosted messaging and collaboration infrastructure.</p>
-                    </div>
+                <div class="order-1 md:order-2 rellax" data-rellax-speed="0.5">
+                    <h3 class="font-mono text-green-500 text-sm mb-4 uppercase tracking-widest" data-aos="fade-left" data-aos-delay="0">// Professional Services</h3>
+                    <h2 class="text-4xl sm:text-5xl font-black uppercase italic text-white mb-6" data-aos="fade-left" data-aos-delay="100">IT <span class="text-yellow-400">Consulting</span></h2>
+                    <p class="text-base sm:text-lg text-slate-400 leading-relaxed mb-8" data-aos="fade-left" data-aos-delay="200">
+                        Beyond the architecture showcase, I provide comprehensive IT consulting driven by direct, transparent communication. With <strong>over 14 years</strong> of hands-on experience—currently operating within the high-stakes robotics and automation sector—I help businesses simplify, secure, and scale. From cybersecurity audits to complex network routing and server administration, I offer tailored, enterprise-grade solutions. 
+                    </p>
+                    <a href="mailto:contact-us@joka.ca" data-aos="zoom-in-up" data-aos-delay="300" class="inline-flex items-center text-black bg-yellow-400 hover:bg-green-500 px-6 py-3 font-bold uppercase tracking-widest transition-colors duration-300 shadow-lg">
+                        Free Consultation
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </a>
                 </div>
             </div>
-        </main>
+        </section>
+
+        <!-- Private Platform Capabilities -->
+        <section class="py-24 sm:py-32 px-4 sm:px-6 max-w-7xl mx-auto border-t border-white/5 relative z-10">
+            <div class="text-center mb-16 sm:mb-20 rellax" data-rellax-speed="0.5">
+                <h3 class="font-mono text-green-500 text-sm mb-4 uppercase tracking-widest" data-aos="fade-up" data-aos-delay="0">// Infrastructure Stack</h3>
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-black uppercase italic text-white" data-aos="fade-up" data-aos-delay="100">Architecture Showcase</h2>
+                <p class="mt-4 sm:mt-6 text-slate-400 max-w-2xl mx-auto text-base sm:text-lg px-2" data-aos="fade-up" data-aos-delay="200">A controlled, private infrastructure environment utilized for advanced system architecture testing, security auditing, and high-availability workload demonstrations.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6 sm:gap-8 items-stretch">
+                <div data-aos="zoom-in-up" data-aos-delay="0" data-tilt data-tilt-max="15" data-tilt-glare data-tilt-max-glare="0.1" class="glass hover-glow-green p-8 sm:p-10 rounded-xl transition-all cursor-crosshair border-t-2 border-t-yellow-400/30 h-full flex flex-col">
+                    <h4 class="font-bold text-white mb-2 uppercase tracking-widest text-lg sm:text-xl min-h-[4rem] flex items-start">Encrypted Storage Volumes</h4>
+                    <p class="text-slate-400 leading-relaxed text-sm sm:text-base flex-grow">Enterprise-grade, encrypted storage arrays deployed within a strictly managed, isolated on-premise environment.</p>
+                </div>
+                
+                <div data-aos="zoom-in-up" data-aos-delay="100" data-tilt data-tilt-max="15" data-tilt-glare data-tilt-max-glare="0.1" class="glass hover-glow-green p-8 sm:p-10 rounded-xl transition-all cursor-crosshair border-t-2 border-t-yellow-400/30 h-full flex flex-col">
+                    <h4 class="font-bold text-white mb-2 uppercase tracking-widest text-lg sm:text-xl min-h-[4rem] flex items-start">Application Sandboxing</h4>
+                    <p class="text-slate-400 leading-relaxed text-sm sm:text-base flex-grow">Isolated containerized environments designed for validating, deploying, and stress-testing custom software architectures.</p>
+                </div>
+                
+                <div data-aos="zoom-in-up" data-aos-delay="200" data-tilt data-tilt-max="15" data-tilt-glare data-tilt-max-glare="0.1" class="glass hover-glow-green p-8 sm:p-10 rounded-xl transition-all cursor-crosshair border-t-2 border-t-yellow-400/30 h-full flex flex-col">
+                    <h4 class="font-bold text-white mb-2 uppercase tracking-widest text-lg sm:text-xl min-h-[4rem] flex items-start">Secure Communications</h4>
+                    <p class="text-slate-400 leading-relaxed text-sm sm:text-base flex-grow">Self-hosted, highly available messaging and collaboration infrastructure built strictly upon zero-trust principles.</p>
+                </div>
+            </div>
+        </section>
     </div>
 
-    <div x-show="route === 'terms' || route === 'privacy'" x-transition:enter="transition ease-out duration-700 delay-300" x-transition:enter-start="opacity-0 translate-y-8" style="display: none;" class="pt-32 pb-32 px-6 max-w-4xl mx-auto min-h-screen">
+    <!-- ========================================== -->
+    <!-- ROUTE: LEGAL DOCS (Terms / Privacy)        -->
+    <!-- ========================================== -->
+    <div x-show="route === 'terms' || route === 'privacy'" 
+         style="display: none;" 
+         x-transition:enter="transition ease-out duration-500 delay-200" 
+         x-transition:enter-start="opacity-0 translate-y-8" 
+         class="relative z-10 pt-32 pb-32 px-4 sm:px-6 max-w-4xl mx-auto min-h-screen">
         
-        <button @click="route = 'home'; window.scrollTo(0,0);" class="mb-12 font-mono text-yellow-400 hover:text-green-500 uppercase tracking-widest text-sm flex items-center transition-colors">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-            Return to Platform
-        </button>
-
-        <div class="glass p-10 md:p-16 border-t-4 border-yellow-400">
+        <div class="glass p-6 sm:p-10 md:p-16 border-t-4 border-yellow-400 shadow-[0_0_30px_rgba(0,0,0,0.8)] overflow-hidden">
             
+            <!-- Terms Text -->
             <div x-show="route === 'terms'">
-                <h2 class="text-4xl font-black uppercase italic mb-10 text-white">Terms <span class="text-yellow-400">and Conditions</span></h2>
-                <div class="prose prose-invert max-w-none text-slate-300 space-y-6 text-sm leading-relaxed">
-                    <p><strong>1. Welcome and Acceptance:</strong> Welcome to Joka.ca (the "Site"). This Site provides access to privately hosted applications and services (collectively, the "Services"). These Terms of Service ("Terms") outline the rules for using the Services. The terms "We," "Us," "Our," or "the Administrator" refer to the individual owner and operator of Joka.ca. The terms "You" or "User" refer to you, the person invited to use the Services. This is a private, personal project. The Services are provided to you as a courtesy and are not for commercial use. By accessing or using any of the Services, you agree to be bound by these Terms. If you do not agree to these terms, you must stop using the Services immediately.</p>
-                    <p><strong>2. The Services:</strong> "As-Is" Service: The Services are provided strictly "AS IS" and "AS AVAILABLE." They may be modified, interrupted, suspended, or discontinued at any time, for any reason, without notice. No Guarantees: We make no promises or guarantees regarding the Services' reliability, security, availability, or performance. No Commercial Use: The Services are provided for your personal, non-commercial use only. You may not resell, lease, or use the Services for any business or revenue-generating activity.</p>
-                    <p><strong>3. User Accounts:</strong> To use the Services, you may need to be provisioned with an account. You are responsible for: Keeping your account credentials (like passwords) confidential. All activities that occur under your account, whether or not you authorized them. Notifying the Administrator immediately if you suspect any unauthorized use of your account.</p>
-                    <p><strong>4. Acceptable Use Policy:</strong> Your use of the Services is conditional. You agree that you will not use the Services to: Violate Any Laws (Canadian or international); Infringe on Rights (Intellectual property or privacy); Distribute Harmful Content (Viruses, malware); Abuse Resources (Spamming, cryptomining, DDoS); Host Objectionable Content (Defamatory, obscene, or hateful).</p>
-                    <p><strong>5. Your Content and Data:</strong> You Own Your Content: You retain all ownership rights. License to Us: You grant the Administrator a limited license to host/store Your Content. NO BACKUP GUARANTEE: You are 100% responsible for maintaining your own backups. Data may be lost at any time. We are not liable for any loss or corruption.</p>
-                    <p><strong>6. Termination:</strong> The Administrator reserves the right to suspend or terminate your access at any time, for any reason or no reason, with or without notice. If you breach these Terms or the personal relationship ends, access is terminated and data may be deleted.</p>
-                    <p><strong>7. Disclaimer of Warranties:</strong> THE SERVICES ARE PROVIDED "AS IS," WITHOUT ANY WARRANTIES. WE DO NOT WARRANT THAT THE SERVICES WILL BE UNINTERRUPTED, SECURE, OR ERROR-FREE. YOU USE THE SERVICES AT YOUR OWN SOLE RISK.</p>
-                    <p><strong>8. Limitation of Liability:</strong> THE ADMINISTRATOR'S TOTAL AGGREGATE LIABILITY TO YOU FOR ANY AND ALL CLAIMS ARISING FROM THE SERVICES IS ZERO DOLLARS ($0.00 CAD).</p>
-                    <p><strong>9. Indemnification:</strong> You agree to defend and hold harmless the Administrator from any claims or expenses (including legal fees) arising from your use of the Services or violation of these Terms.</p>
-                    <p><strong>10. General Terms:</strong> Governing Law: Laws of Ontario and Canada. Changes to Terms: We may modify these Terms at any time. Contact: Please contact the Administrator for any questions.</p>
+                <h2 class="text-3xl sm:text-4xl font-black uppercase italic mb-8 sm:mb-10 text-white break-words">Terms <span class="text-yellow-400 inline-block mt-2 sm:mt-0">and Conditions</span></h2>
+                <div class="prose prose-invert max-w-none text-slate-300 space-y-6 text-sm sm:text-base leading-relaxed font-sans">
+                    <p><strong>1. Welcome and Acceptance:</strong> Welcome to Joka.ca (the "Site"). This Site operates as both a private sandbox platform and a portfolio for professional IT consulting services. By accessing or using the Site, you agree to be bound by these Terms.</p>
+                    <p><strong>2. Consulting Services:</strong> Information presented regarding IT consulting services is for demonstrative purposes. No professional relationship is formed merely by using this Site. Actual consulting engagements will be governed by a separate, signed Statement of Work (SOW) or master services agreement.</p>
+                    <p><strong>3. Private Services (Sandbox):</strong> Access to privately hosted applications ("Services") is provided to authorized users strictly "AS IS" and "AS AVAILABLE" as a courtesy. These specific Services are for personal, non-commercial use only. We make no guarantees regarding reliability, security, or performance.</p>
+                    <p><strong>4. User Accounts:</strong> If provisioned with an account for the private sandbox, you are responsible for keeping credentials confidential and all activities under your account.</p>
+                    <p><strong>5. Acceptable Use Policy:</strong> You agree not to: Violate Any Laws; Infringe on Rights; Distribute Harmful Content; Abuse Resources (Spamming, DDoS); Host Objectionable Content.</p>
+                    <p><strong>6. Data and Backups (Sandbox):</strong> For private hosting users: You retain ownership of your content. NO BACKUP GUARANTEE: You are 100% responsible for maintaining your own backups. We are not liable for data loss.</p>
+                    <p><strong>7. Limitation of Liability:</strong> THE ADMINISTRATOR'S TOTAL AGGREGATE LIABILITY TO YOU FOR ANY AND ALL CLAIMS ARISING FROM THE FREE PRIVATE SERVICES OR USE OF THIS SITE IS ZERO DOLLARS ($0.00 CAD).</p>
+                    <p><strong>8. General Terms:</strong> Governing Law: Laws of Ontario and Canada. Changes to Terms: We may modify these Terms at any time.</p>
                 </div>
             </div>
 
+            <!-- Privacy Text -->
             <div x-show="route === 'privacy'" style="display: none;">
-                <h2 class="text-4xl font-black uppercase italic mb-10 text-white">Privacy <span class="text-green-500">Policy</span></h2>
-                <div class="prose prose-invert max-w-none text-slate-300 space-y-6 text-sm leading-relaxed">
-                    <p><strong>1. The Basics:</strong> This is the privacy policy for Joka.ca. This site is a personal, non-commercial project run by the Administrator to provide services to friends and invited users. I am not a business and will never sell your data.</p>
-                    <p><strong>2. Information Collected:</strong> Information You Provide (usernames, email), Your Content (files/data), and Technical Information (Server Logs like IP addresses and access times).</p>
-                    <p><strong>3. Use of Information:</strong> To provide services, maintain security, monitor for errors, and communicate with you about your account.</p>
-                    <p><strong>4. Sharing Information:</strong> I will NOT sell, rent, or trade your info. Exceptions only apply for legal compliance or to investigate abuse of the Terms of Service.</p>
-                    <p><strong>5. Data Security & Administrator Access:</strong> Reasonable technical measures are used (firewalls, secure protocols). ADMINISTRATOR ACCESS: As the sole administrator, I have the technical ability to access any data on the server but promise to only do so for troubleshooting, maintenance, or security needs.</p>
-                    <p><strong>6. Cookies:</strong> Minimal session cookies are used to keep you logged in. No third-party tracking.</p>
-                    <p><strong>7. Data Retention:</strong> Info is kept as long as you have an account. Log files are automatically deleted after a limited troubleshooting period.</p>
+                <h2 class="text-3xl sm:text-4xl font-black uppercase italic mb-8 sm:mb-10 text-white break-words">Privacy <span class="text-green-500 inline-block mt-2 sm:mt-0">Policy</span></h2>
+                <div class="prose prose-invert max-w-none text-slate-300 space-y-6 text-sm sm:text-base leading-relaxed font-sans">
+                    <p><strong>1. The Basics:</strong> This privacy policy covers data collected via Joka.ca for both commercial business inquiries (Consulting) and the private sandbox platform.</p>
+                    <p><strong>2. Business & Consulting Inquiries:</strong> When you contact us for IT consulting via email, we collect the information you provide (name, email, company info) strictly to communicate with you regarding potential business engagements. This data is not sold to third parties.</p>
+                    <p><strong>3. Private Sandbox Users:</strong> For authorized users of the private sandbox, we collect information needed to provide the services (usernames), your uploaded content, and technical server logs (IP addresses). As the sole administrator, I have technical access to this data but will only access it for troubleshooting or security needs.</p>
+                    <p><strong>4. Sharing Information:</strong> We do NOT sell, rent, or trade your info. Exceptions only apply for legal compliance or to investigate abuse of the Terms of Service.</p>
+                    <p><strong>5. Data Security:</strong> Reasonable technical measures are used (firewalls, secure protocols). However, no system is entirely secure.</p>
+                    <p><strong>6. Data Deletion:</strong> If you wish to have your account or business inquiry data deleted, please contact the Administrator.</p>
                 </div>
             </div>
             
         </div>
     </div>
 
-    <footer class="py-12 border-t border-white/10 bg-black/50 relative z-10">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-6">
-            <div>
-                <img src="inview.png" class="h-8 w-8 mb-4 opacity-50 grayscale hover:grayscale-0 transition duration-500 mx-auto md:mx-0" alt="Joka Logo">
-                <p class="text-xs font-black uppercase tracking-widest text-slate-500">Joka.ca Infrastructure</p>
-                <p class="text-[10px] text-slate-600 uppercase tracking-widest font-mono mt-1">Copyright &copy; <span x-text="year"></span> - All Rights Reserved</p>
-            </div>
-            
-            <div class="flex space-x-6 text-xs font-mono uppercase tracking-widest">
-                <button @click="route = 'terms'; window.scrollTo(0,0);" class="text-slate-500 hover:text-yellow-400 transition">Terms</button>
-                <button @click="route = 'privacy'; window.scrollTo(0,0);" class="text-slate-500 hover:text-green-500 transition">Privacy Policy</button>
-            </div>
-        </div>
+    <!-- Minimal Footer -->
+    <footer class="py-8 border-t border-white/5 relative z-10 bg-black/80 backdrop-blur-md text-center flex flex-col items-center">
+        <a href="https://www.linkedin.com/in/julius-koka/" target="_blank" class="text-slate-400 hover:text-green-500 transition-colors mb-4 flex items-center justify-center gap-2 font-mono text-xs uppercase tracking-widest">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            Connect on LinkedIn
+        </a>
+        <p class="text-xs font-mono text-slate-600 uppercase tracking-widest">
+            Copyright &copy; <span x-text="year"></span> Joka.ca - All Rights Reserved
+        </p>
     </footer>
 
-    <script> AOS.init({ once: true }); </script>
+    <!-- Initialization Scripts -->
+    <script>
+        // Updated Scroll Animations (Lusion pop-in feel & re-triggering)
+        AOS.init({ 
+            once: false, // This allows animations to re-trigger when scrolling back
+            mirror: true, // Animates out while scrolling past
+            offset: 80, // Slightly higher offset so it pops in later
+            duration: 800,
+            easing: 'ease-out-back' // Adds a slight "spring" or "pop" to the end of the animation
+        });
+
+        // Add CSS keyframes for loading bar programmatically
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes progress {
+                0% { transform: scaleX(0); }
+                50% { transform: scaleX(0.5); }
+                100% { transform: scaleX(1); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Init Particles JS (Updated to Yellow #eab308)
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#eab308" }, 
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.5, "random": false },
+                "size": { "value": 3, "random": true },
+                "line_linked": { "enable": true, "distance": 150, "color": "#eab308", "opacity": 0.2, "width": 1 },
+                "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "out_mode": "out" }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": { "enable": true, "mode": "repulse" },
+                    "onclick": { "enable": true, "mode": "push" },
+                    "resize": true
+                }
+            },
+            "retina_detect": true
+        });
+
+        // Initialize Parallax
+        setTimeout(() => {
+            var rellax = new Rellax('.rellax', {
+                speed: -2,
+                center: false,
+                wrapper: null,
+                round: true,
+                vertical: true,
+                horizontal: false
+            });
+        }, 2000);
+    </script>
 </body>
 </html>
