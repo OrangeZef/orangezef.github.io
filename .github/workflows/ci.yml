@@ -36,7 +36,7 @@ jobs:
             --verbose
             --no-progress
             --max-retries 3
-            --accept 429,403
+            --accept 200..=299,403,429
             --exclude 'https://fonts\.gstatic\.com'
             './index.html'
             './sitemap.xml'
